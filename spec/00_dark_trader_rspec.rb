@@ -1,4 +1,4 @@
-require_relative '../lib/dark_trader'
+require_relative '../lib/00_dark_trade.rb'
 
 describe "the name_ method" do
   it "should return an array of currencies names not nil" do
