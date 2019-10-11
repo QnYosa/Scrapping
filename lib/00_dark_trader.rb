@@ -5,25 +5,31 @@ require 'pry'
 
 page = Nokogiri::HTML(open("https://coinmarketcap.com/all/views/all/"))
 
-def name_ 
-    name_crypto = []
-    @page.xpath('//tr/td[3]').each do |crypto|
-        name_crypto << crypto.text #work
-        end    
+def name_(page) 
+    arr_crypto_name = page.xpath('//tr/td[3]')
+  # lister dans un array toutes les valeurs trouvée dans la 3e colonne (symbol) du tableau HTML
+  return arr_crypto_name
+end    
 
-    value_crypto = []
-    @page.xpath('//tr/td[4]').each do |values|
-    value_crypto << values.text.to_s.delete("$").to_f
-    end
-    final_crypto = []
-for i in 0...name_crypto.size
-    final_crypto << {name_crypto[i] => value_crypto[i]}
-end
-    #hash_cryptos = Hash.new
-    #hash_cryptos = Hash[name_crypto.zip value_crypto] #work
+def price_list(page)
+    value_crypto = page.xpath('//tr/td[4]')
+    #lister dans un array toutes les valeurs trouvée dans la 5e colonnes(price) du tableau HTML
 
-    #final_crypto = []
-    return puts final_crypto 
+    value_crypto_s_f = value_crypto.map { |price| price.to_s.delete("$").to_f}
+    #transformer cette valeur en string pour pouvoir retirer le '$' puis la reconvertir en float
+    return value_crypto_s_f
 end
 
-perform()
+def currency_cours(page)
+    c_name = name_(page)
+    c_value = price_list(page)
+    final_crypto = []# créer un array vide qui va accueillir les hashes de noms/prix
+    # pour chaque element de la liste, on crée un hash {nom monnaie => valeur monnaie} puis on l'insère dans notre array
+
+        for i in 0...c_name.size
+        final_crypto << {c_name[i] => vc_value[i]}
+        end 
+    return final_crypto
+end
+    
+currency_cours(page)
